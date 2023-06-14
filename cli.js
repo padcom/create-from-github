@@ -37,10 +37,22 @@ async function findNextFreeName(path) {
   const files = await fs.readdir('.')
   const conflicts = files.filter(file => file.startsWith(path))
 
-  let index = 1
-  while (conflicts.includes(`${path}${index}`)) index++
+  if (conflicts.includes(path)) {
+    let index = 1
+    while (conflicts.includes(`${path}${index}`)) index++
 
-  return `${path}${index}`
+    return `${path}${index}`
+  } else {
+    return path
+  }
+}
+
+/**
+ * @param {String} s
+ * @param {String} suffix
+ **/
+function cutSuffix(s, suffix) {
+  return s.endsWith(suffix) ? s.substring(0, s.length - suffix.length) : s
 }
 
 const packageJson = JSON.parse(await fs.readFile(`${dirname}./package.json`))
@@ -49,7 +61,8 @@ console.log(packageJson.name, 'version', packageJson.version, 'by', packageJson.
 const repo    = process.argv[2]
 const source  = repo
 const scope   = extractScopeFromSource(source)
-const dir     = await findNextFreeName(extractNameFromSource(source))
+const name    = cutSuffix(extractNameFromSource(source), '-template')
+const dir     = await findNextFreeName(name)
 const pkg     = process.argv[3] ? process.argv[3] : (scope ? ('@' + scope + '/') : '') + dir;
 const pkgfile = `./${dir}/package.json`
 const ghroot  = `https://github.com/${scope}/${dir}`
