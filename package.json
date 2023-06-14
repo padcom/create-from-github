@@ -1,0 +1,39 @@
+{
+  "name": "create-from-github",
+  "version": "0.0.1",
+  "description": "NPM project generator from github repositories as templates",
+  "keywords": [
+    "npm"
+  ],
+  "type": "module",
+  "author": "Matthias Hryniszak <padcom@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/padcom/create-from-github#readme",
+  "bugs": {
+    "url": "https://github.com/padcom/create-from-github/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/padcom/create-from-github.git"
+  },
+  "main": "cli.js",
+  "files": [
+    "README.md",
+    "cli.js"
+  ],
+  "bin": {
+    "create-from-github": "cli.js"
+  },
+  "scripts": {
+    "prepublishOnly": "npm install"
+  },
+  "dependencies": {
+    "isomorphic-git": "^1.24.0"
+  },
+  "engines": {
+    "node": ">=19.0.0"
+  },
+  "os": [
+    "!win32"
+  ]
+}
