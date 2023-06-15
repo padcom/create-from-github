@@ -1,6 +1,6 @@
 {
   "name": "create-from-github",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NPM project generator from github repositories as templates",
   "keywords": [
     "npm"
