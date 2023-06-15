@@ -61,11 +61,11 @@ console.log(packageJson.name, 'version', packageJson.version, 'by', packageJson.
 const repo    = process.argv[2]
 const source  = repo
 const scope   = extractScopeFromSource(source)
-const name    = cutSuffix(extractNameFromSource(source), '-template')
-const dir     = await findNextFreeName(name)
-const pkg     = process.argv[3] ? process.argv[3] : (scope ? ('@' + scope + '/') : '') + dir;
-const pkgfile = `./${dir}/package.json`
-const ghroot  = `https://github.com/${scope}/${dir}`
+const name    = await findNextFreeName(cutSuffix(process.argv[3] || extractNameFromSource(source), '-template'))
+const dir     = name
+const pkg     = (scope ? ('@' + scope + '/') : '') + name;
+const pkgfile = `./${name}/package.json`
+const ghroot  = `https://github.com/${scope}/${name}`
 
 const url = `https://github.com/${source}`
 console.log('cloning', url, '...')
