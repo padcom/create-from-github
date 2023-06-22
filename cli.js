@@ -68,8 +68,13 @@ const pkgfile = `./${name}/package.json`
 const ghroot  = `https://github.com/${scope}/${name}`
 
 const url = `https://github.com/${source}`
-console.log('cloning', url, '...')
-await git.clone({ fs, http, dir, url })
+try {
+  console.log('cloning', url, '...')
+  await git.clone({ fs, http, dir, url })
+} catch {
+  console.log('cloning', url + '-template', '...')
+  await git.clone({ fs, http, dir, url: url + '-template' })
+}
 
 console.log('cleaning up', dir, '...')
 await fs.rm(`${dir}/.git`, { recursive: true })
