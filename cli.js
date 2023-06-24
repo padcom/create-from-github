@@ -55,17 +55,31 @@ function cutSuffix(s, suffix) {
   return s.endsWith(suffix) ? s.substring(0, s.length - suffix.length) : s
 }
 
+/**
+ * Get scope from git's user's email
+ */
+async function getScope() {
+  try {
+    const { stdout: email } = await exec('git config --global --get user.email')
+    const scope = email.split('@').at(0)
+
+    return scope
+  } catch {
+    return ''
+  }
+}
+
 const packageJson = JSON.parse(await fs.readFile(`${dirname}./package.json`))
 console.log(packageJson.name, 'version', packageJson.version, 'by', packageJson.author, '\n')
 
 const repo    = process.argv[2]
 const source  = repo
-const scope   = extractScopeFromSource(source)
+const scope   = await getScope()
 const name    = await findNextFreeName(cutSuffix(process.argv[3] || extractNameFromSource(source), '-template'))
-const dir     = name
 const pkg     = (scope ? ('@' + scope + '/') : '') + name;
 const pkgfile = `./${name}/package.json`
 const ghroot  = `https://github.com/${scope}/${name}`
+const dir     = name
 
 const url = `https://github.com/${source}`
 try {
