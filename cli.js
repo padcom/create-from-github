@@ -6,13 +6,16 @@ import * as fs from 'fs/promises'
 import { fileURLToPath } from 'url'
 import { promisify } from 'util'
 import { exec as exec1 } from 'child_process'
+import { existsSync } from 'fs'
 const exec = promisify(exec1)
 
 const dirname = fileURLToPath(new URL('.', import.meta.url))
 
 async function withPackageJsonAndPath(path, callback) {
-  const packageJson = await callback(JSON.parse(await fs.readFile(path)))
-  await fs.writeFile(path, JSON.stringify(packageJson, null, 2))
+  if (existsSync(path)) {
+    const packageJson = await callback(JSON.parse(await fs.readFile(path)))
+    await fs.writeFile(path, JSON.stringify(packageJson, null, 2))
+  }
 }
 
 /**
